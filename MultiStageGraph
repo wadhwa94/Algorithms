@@ -1,0 +1,63 @@
+//multistageGraph
+//wadhwa94
+// query: my algo is for any normal graph or for multistage graph
+#include <iostream>
+#include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+#include <utility>
+
+using namespace std;
+int main()
+{
+	int vertices;       //number of vertices
+	cout<<"enter number of vertices"<<endl;
+	cin>>vertices;
+	int c[vertices][vertices];/* = { {	0,3,2,0,0,0;
+									0,0,0,4,0,0;
+									0,0,0,2,5,0;
+									0,0,0,0,0,1;
+									0,0,0,0,0,4;
+									0,0,0,0,0,0;
+								};            // matrix for cost of edges
+*/
+	cout<<"enter the matrix for cost of edges"<<endl;
+	for(int i=0;i<vertices;i++){
+		for(int j=0;j<vertices;j++){
+			cin>>c[i][j];
+		}	
+	}
+	cout<<"input Matrix is"<<endl;
+	for(int i=0;i<vertices;i++){
+		for(int j=0;j<vertices;j++){
+			cout<<c[i][j]<<" ";
+		}	
+		cout<<endl;
+	}
+	int cost[vertices]; // representing minimum cost from node to destination
+	for(int i=0;i<vertices;i++){
+		cost[i] = c[i][vertices-1];
+	}
+
+	for(int i=vertices-2;i>=0;i--){		//for all the nodes which dont have a direct path to destination node 
+		if(c[i][vertices-1] == 0){
+			for(int j=0;j<vertices;j++){
+				if(c[i][j]!=0){
+						int x = cost[j] + c[i][j];
+				  		if(cost[i]==0){
+				  			cost[i]=x;
+				  		}
+				  		else{
+				  			cost[i] = min(cost[i],x);			
+				  		}
+					}
+				}
+			}
+		}
+		cout<<"cost form each node to destination "<<endl;
+	for(int i=0;i<vertices;i++){
+		cout<<cost[i]<<" ";
+	}		
+}
+
