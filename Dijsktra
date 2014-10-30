@@ -1,0 +1,70 @@
+#include<iostream>
+#define INT_MAX 9999999
+#define v 9
+using namespace std;
+int minimumDist(int dist[],bool mst[],int n)
+{
+	int min = INT_MAX;
+	int k;
+	for (int i=0;i<n;i++)
+	{
+		if(mst[i]==false && dist[i]<min)
+		{	min=dist[i];
+			k=i;
+		}
+		
+		
+	}
+	return k;
+}
+void printSolution(int dist[],int n)
+{
+	for(int i=0;i<n;i++)
+	cout<<dist[i]<<"	";
+}
+int solve(int graph[v][v],int src,int n )
+{
+	int dist[n];
+	bool mst[n];
+	for (int i=0;i<n;i++)
+	{	dist[i]=INT_MAX;
+		mst[i]=false;
+	}
+	
+	
+	dist[src]=0;
+	
+	for (int i=0;i<n;i++)
+	{
+		int u = minimumDist(dist,mst,n);
+		mst[u]=true;
+		
+		for (int j=0;j<n;j++) //update the distance
+		{
+             if(graph[u][j] != 0 && !mst[j] && dist[u] != INT_MAX && dist[u]+graph[u][j]<dist[j] )
+             dist[j]=dist[u] + graph[u][j];
+		}
+
+	}
+	printSolution(dist,n);
+}
+int main()
+{
+	//int n = 9;
+	//cin>>n;
+	int a_graph[v][v]= {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                      {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                      {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                      {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                      {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                      {0, 0, 4, 0, 10, 0, 2, 0, 0},
+                      {0, 0, 0, 14, 0, 2, 0, 1, 6},
+                      {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                      {0, 0, 2, 0, 0, 0, 6, 7, 0}
+                     };
+	int src = 0;
+	solve(a_graph,0,v);
+	int a;
+	cin>>a;
+	}
+
