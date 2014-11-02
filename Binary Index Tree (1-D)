@@ -1,0 +1,110 @@
+//Binary index tree
+#include <iostream>
+#include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+#include <utility>
+
+using namespace std;
+void printTree(int tree[],int n)
+{
+	for(int i=0;i<n;i++){
+		cout<<tree[i]<<" ";
+	}
+	cout<<endl;
+}
+int main()
+{
+	int n; //number of elements
+	cin>>n;	
+	int freq[n];
+	for(int i=0;i<n;i++){
+		cin>>freq[i];
+	}
+	int tree[n];
+	memset(tree,0,sizeof(tree));
+	for(int i=1;i<n;i++){
+		int j=i;
+		while(j<=n){
+			tree[j] = tree[j]+freq[i];
+			j = j+ (j&(-j));
+			
+		}
+	}
+	printTree(tree,n);
+	int j,val,sum,sum_1,sum_2,index,start_index,end_index;
+	cout<<"three types of query"<<endl;
+	cout<<"1) add to any index of the form <index,val>"<<endl;
+	cout<<"2) commulative frequency at index i (freq[0]+freq[1]+freq[2]+freq[3]+.... + freq[i]) <i>"<<endl;
+	cout<<"3) commulative frequesny from i to j (freq[i+0]+freq[i+1]+freq[i+2]+freq[3]+.... + freq[j]) <i,j>"<<endl;
+	
+	cout<<"number of queries"<<endl;
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	int k;
+	cin>>k;
+	switch(k)
+	{
+		case 1:	
+				//int index,val;
+				cin>>index>>val;
+				freq[index]+=val;
+				j=index;
+				while(j<=n)
+				{
+					tree[j]+=val;
+					j=j+(j&(-j));
+					//cout<<"j = "<<j<<endl;	
+				}
+				printTree(tree,n);
+				break;
+		case 2:	
+				sum=0;
+				//int index;
+				cin>>index;
+				j=index;
+				while(j>0)
+				{	
+					sum = sum + tree[j];
+					j= j - (j&(-j));
+					//cout<<"j = "<<j<<endl;
+				}
+				printTree(tree,n);
+				cout<<"sum = "<<sum<<endl;
+				break;
+		case 3:	
+				sum_1=0;
+				sum_2=0;
+				//int start_index;
+				//int end_index;
+				cin>>start_index>>end_index;
+				j=start_index;
+				while(j>0)
+				{	
+					sum_1 = sum_1 + tree[j];
+					j= j - (j&(-j));
+					//cout<<"j = "<<j<<endl;
+				}
+				j=end_index;
+				while(j>0)
+				{	
+					sum_2 = sum_2 + tree[j];
+					j= j - (j&(-j));
+					cout<<"j = "<<j<<endl;
+				}
+				printTree(tree,n);
+				cout<<"sum == "<<(sum_2-sum_1)<<endl;;
+				break;
+
+		default: cout<<"Wrong choice"<<endl;		
+	};
+	
+	}
+
+
+
+
+}
